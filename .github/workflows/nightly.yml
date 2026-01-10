@@ -4,6 +4,27 @@ on:
   schedule:
     - cron: "15 0 * * *"
   workflow_dispatch:
+    inputs:
+      date:
+        description: "Override date (YYYY-MM-DD). Leave blank for yesterday."
+        required: false
+        default: ""
+      steps:
+        description: "Override steps (integer). Leave blank to use Garmin."
+        required: false
+        default: ""
+      distance_m:
+        description: "Override distance meters (integer). Leave blank to use Garmin."
+        required: false
+        default: ""
+      speed_mps:
+        description: "Override speed m/s for elapsed_time estimate (default 1.3)."
+        required: false
+        default: ""
+      dry_run:
+        description: "true/false. If true, prints payload and exits."
+        required: false
+        default: "false"
 
 jobs:
   run:
@@ -31,4 +52,10 @@ jobs:
           STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
           STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
           STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+
+          OVERRIDE_DATE: ${{ inputs.date }}
+          OVERRIDE_STEPS: ${{ inputs.steps }}
+          OVERRIDE_DISTANCE_M: ${{ inputs.distance_m }}
+          OVERRIDE_SPEED_MPS: ${{ inputs.speed_mps }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: uv run python main.py
