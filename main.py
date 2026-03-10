@@ -38,7 +38,7 @@ def strava_create_walk(
             "distance": float(distance_m),
             "elapsed_time": int(elapsed_time_s),
             "description": description,
-            "private": 1,  # set to 1 to keep these out of your feed
+            "hide_from_home": True,  # hide from followers' home feed
         },
         timeout=30,
     )
